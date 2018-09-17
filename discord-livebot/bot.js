@@ -24,7 +24,7 @@ function checkIfLive() {
 
 function sendLiveMessage() {
   if (twitchJSON.stream != null) {
-    webHook.send("**" + twitchJSON.stream.channel.display_name + "**" + " just went live! " + "*" + twitchJSON.stream.channel.status + "* " + twitchJSON.stream.channel.url);
+    webHook.send(`@everyone **${twitchJSON.stream.channel.display_name}** just went live! *${twitchJSON.stream.channel.status}* ${twitchJSON.stream.channel.url}`);
   }
   else {
     webHook.send(config.userID + " just went live! https://twitch.tv/" + config.userID);
@@ -33,10 +33,10 @@ function sendLiveMessage() {
 
 function app() {
   checkIfLive();
-  console.log(isLive);
+  console.log("Is live: " + isLive);
   if (isLive == true && messageSent == false) {
     sendLiveMessage();
-    console.log("test");
+    console.log("Discord message sent");
     messageSent = true;
   }
   else if (isLive == false) {
