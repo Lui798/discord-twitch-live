@@ -1,7 +1,15 @@
+'use strict';
+
 const Discord = require("discord.js");
 const config = require("./config.json");
 const request = require("sync-request");
 const webHook = new Discord.WebhookClient(config.webhookID, config.webhookToken);
+
+console.log(process.argv[1]);
+console.log(process.argv[2]);
+if (process.argv[2] != undefined) {
+  config.userID = process.argv[2];
+}
 
 var twitchURL = "https://api.twitch.tv/kraken/streams/" + config.userID + "?client_id=" + config.clientID;
 var twitchJSON = getJSON(twitchURL);
@@ -39,7 +47,7 @@ function sendLiveMessage() {
       .addField("Game", twitchJSON.stream.channel.game)
       .addField("Link", twitchJSON.stream.channel.url);
     //webHook.send(`@everyone **${twitchJSON.stream.channel.display_name}** just went live! *${twitchJSON.stream.channel.status}* ${twitchJSON.stream.channel.url}`);
-    webHook.send("", embed);
+    webHook.send("@everyone", embed);
   }
   else {
     webHook.send(config.userID + " just went live! https://twitch.tv/" + config.userID);
