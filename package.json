@@ -4,13 +4,16 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node livebot/bot.js"
+  },
+  "bin": {
+    "discord-twitch-live": "livebot/bot.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "discord.js": "^11.2.1",
+    "discord.js": "^11.4.2",
     "jQuery": "^1.7.4",
     "merge": "^1.2.0",
     "request": "^2.88.0",
