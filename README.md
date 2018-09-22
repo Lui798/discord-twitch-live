@@ -10,4 +10,8 @@ This project requires node.js: http://nodejs.org
 
 ### Starting
 
-Start bot with: npm run start
+There are two versions of this bot: A webhook and a normal bot. The bot updates the message during the stream to show the latest title etc.
+
+Start bot with:		npm run bot
+
+Start webhook with:	npm run
