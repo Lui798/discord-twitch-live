@@ -1,0 +1,8 @@
+{
+  "userID": "twitch-username",
+  "clientID": "twitch-appliction-clientid",
+  "channelID": "bot-channel-id",
+  "botToken": "bot-token",
+  "webhookID": "webhook-id",
+  "webhookToken": "webhook-token"
+}

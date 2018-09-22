@@ -1,6 +1,0 @@
-{
-  "userID": "twitch_username",
-  "clientID": "twitch_application_client_id",
-  "webhookID": "discord_webhook-id_",
-  "webhookToken": "discord_webhook_token"
-}

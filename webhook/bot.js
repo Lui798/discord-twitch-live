@@ -1,11 +1,10 @@
 'use strict';
 
 const Discord = require("discord.js");
-const config = require("./config.json");
+const config = require("../config.json");
 const request = require("sync-request");
 const webHook = new Discord.WebhookClient(config.webhookID, config.webhookToken);
 
-console.log(process.argv[1]);
 console.log(process.argv[2]);
 if (process.argv[2] != undefined) {
   config.userID = process.argv[2];

@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node livebot/bot.js"
+    "webhook": "node webhook/bot.js",
+	"bot": "node bot/bot.js"
   },
   "bin": {
     "discord-twitch-live": "livebot/bot.js"
