@@ -14,4 +14,4 @@ There are two versions of this bot: A webhook and a normal bot. The bot updates 
 
 Start bot with:		npm run bot
 
-Start webhook with:	npm run
+Start webhook with:	npm run webhook
