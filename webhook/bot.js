@@ -29,27 +29,38 @@ function checkIfLive() {
   }
 }
 
+function createRichEmbed() {
+  let gameUrl = null;
+  if (twitchJSON.stream.channel.game === "") {
+    twitchJSON.stream.channel.game = "No game set";
+    gameUrl = "https://www.twitch.tv/directory/";
+  }
+  else if (twitchJSON.stream.channel.game !== "") {
+    gameUrl = "https://www.twitch.tv/directory/game/" + encodeURIComponent(twitchJSON.stream.channel.game);
+  }
+  else if (twitchJSON.stream.channel.status === "") {
+    twitchJSON.stream.channel.status = "No status set";
+  }
+  var embed = new Discord.RichEmbed()
+    .setAuthor(twitchJSON.stream.channel.display_name, twitchJSON.stream.channel.logo)
+    .setColor(0x6441A4)
+    .setImage(`https://static-cdn.jtvnw.net/previews-ttv/live_user_${twitchJSON.stream.channel.name}-1152x648.jpg`)
+    .setThumbnail(twitchJSON.stream.channel.logo)
+    .addField("Stream", `[${twitchJSON.stream.channel.status}](${twitchJSON.stream.channel.url})`)
+    .addField("Game", `[${twitchJSON.stream.channel.game}](${gameUrl})`)
+    .setTimestamp()
+    .setFooter(twitchJSON.stream.viewers + " Viewers");
+    //.addField("Link", twitchJSON.stream.channel.url);
+  return embed;
+}
+
 function sendLiveMessage() {
   if (twitchJSON.stream != null) {
-    if (twitchJSON.stream.channel.game === "") {
-      twitchJSON.stream.channel.game = "No game set";
-    }
-    else if (twitchJSON.stream.channel.status === "") {
-      twitchJSON.stream.channel.status = "No status set";
-    }
-    const embed = new Discord.RichEmbed()
-      .setAuthor(twitchJSON.stream.channel.display_name, twitchJSON.stream.channel.logo)
-      .setColor(0x6441A4)
-      .setImage(`https://static-cdn.jtvnw.net/previews-ttv/live_user_${twitchJSON.stream.channel.name}-1152x648.jpg`)
-      .setThumbnail(twitchJSON.stream.channel.logo)
-      .addField("Title", twitchJSON.stream.channel.status)
-      .addField("Game", twitchJSON.stream.channel.game)
-      .addField("Link", twitchJSON.stream.channel.url);
-    //webHook.send(`@everyone **${twitchJSON.stream.channel.display_name}** just went live! *${twitchJSON.stream.channel.status}* ${twitchJSON.stream.channel.url}`);
+    var embed = createRichEmbed();
     webHook.send("@everyone", embed);
   }
   else {
-    webHook.send(config.userID + " just went live! https://twitch.tv/" + config.userID);
+    console.log("Could not send message");
   }
 }
 
