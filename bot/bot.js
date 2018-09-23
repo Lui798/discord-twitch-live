@@ -16,8 +16,11 @@ client.on("ready", () => {
 
   var twitchURL = "https://api.twitch.tv/kraken/streams/" + config.userID + "?client_id=" + config.clientID;
   var twitchJSON = getJSON(twitchURL);
+  var channelJSON = getJSON("https://api.twitch.tv/kraken/channels/" + config.userID + "?client_id=" + config.clientID);
   var isLive = false;
   var messageSent = false;
+
+  let maxViewers = 0;
 
   function getJSON(url) {
     return JSON.parse(request('GET', url, {retry: true}).getBody());
@@ -35,6 +38,36 @@ client.on("ready", () => {
     else {
       isLive = false;
     }
+  }
+
+  function updateMaxViewers() {
+    if (twitchJSON.stream.viewers > maxViewers) {
+      maxViewers = twitchJSON.stream.viewers;
+    }
+  }
+
+  function vodRichEmbed() {
+    let vodJSON = getJSON(`https://api.twitch.tv/kraken/channels/${config.userID}/videos?client_id=${config.clientID}&broadcast_type=archive`);
+    let video = vodJSON.videos[0];
+
+    let gameUrl = null;
+    if (video.game === "") {
+      gameUrl = "https://www.twitch.tv/directory/";
+    }
+    else if (video.game !== "") {
+      gameUrl = "https://www.twitch.tv/directory/game/" + encodeURIComponent(video.game);
+    }
+
+    var embed = new Discord.RichEmbed()
+      .setAuthor(channelJSON.display_name, channelJSON.logo)
+      .setColor(0xF53737)
+      .setImage(video.preview.substr(0, video.preview.lastIndexOf("-") + 1) + "1152x648.jpg")
+      .setThumbnail(channelJSON.logo)
+      .addField("Stream VOD", `[${video.title}](${video.url})`)
+      .addField("Game", `[${video.game}](${gameUrl})`)
+      .setTimestamp()
+      .setFooter(maxViewers + " Peak Viewers");
+    return embed;
   }
 
   function createRichEmbed() {
@@ -62,9 +95,14 @@ client.on("ready", () => {
     return embed;
   }
 
-  function updateRichEmbed() {
+  function updateRichEmbed(vod) {
     var message = client.user.lastMessage;
-    var embed = createRichEmbed();
+    if (vod === true) {
+      var embed = vodRichEmbed();
+    }
+    else {
+      var embed = createRichEmbed();
+    }
     message.edit("@everyone", embed)
   }
 
@@ -85,16 +123,20 @@ client.on("ready", () => {
       sendLiveMessage();
       console.log("Discord message sent");
       messageSent = true;
+      maxViewers = 0;
     }
     else if (isLive == true && messageSent == true) {
+      updateMaxViewers();
       updateRichEmbed();
       console.log("Updated message");
     }
     else if (isLive == false) {
+      if (messageSent == true) {
+        updateRichEmbed(true);
+      }
       messageSent = false;
     }
   }
-
   setInterval(app, 30000);
 });
 
