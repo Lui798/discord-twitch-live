@@ -15,3 +15,10 @@ There are two versions of this bot: A webhook and a normal bot. The bot updates 
 Start bot with:		npm run bot
 
 Start webhook with:	npm run webhook
+
+### Experimental Features
+
+You can use multiple streams on one bot by launching the bot and adding the username at the end.
+Example: npm run bot username or node bot/bot.js username
+
+Please let the code run through the loop at least once before running another instance. (About 30 seconds)

@@ -14,11 +14,11 @@ client.on("ready", () => {
 
   let channel = client.channels.get(config.channelID);
 
-  var twitchURL = "https://api.twitch.tv/kraken/streams/" + config.userID + "?client_id=" + config.clientID;
-  var twitchJSON = getJSON(twitchURL);
+  var twitchJSON = getJSON("https://api.twitch.tv/kraken/streams/" + config.userID + "?client_id=" + config.clientID);
   var channelJSON = getJSON("https://api.twitch.tv/kraken/channels/" + config.userID + "?client_id=" + config.clientID);
   var isLive = false;
   var messageSent = false;
+  var message = null;
 
   let maxViewers = 0;
 
@@ -27,7 +27,7 @@ client.on("ready", () => {
   }
 
   function updateJSON() {
-    twitchJSON = getJSON(twitchURL);
+    twitchJSON = getJSON("https://api.twitch.tv/kraken/streams/" + config.userID + "?client_id=" + config.clientID);
   }
 
   function checkIfLive() {
@@ -96,7 +96,9 @@ client.on("ready", () => {
   }
 
   function updateRichEmbed(vod) {
-    var message = client.user.lastMessage;
+    if (message == null) {
+      message = client.user.lastMessage;
+    }
     if (vod === true) {
       var embed = vodRichEmbed();
     }
@@ -135,6 +137,7 @@ client.on("ready", () => {
         updateRichEmbed(true);
       }
       messageSent = false;
+      message = null;
     }
   }
   setInterval(app, 30000);
