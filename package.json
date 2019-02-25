@@ -16,7 +16,7 @@
   "dependencies": {
     "discord.js": "^11.4.2",
     "jQuery": "^1.7.4",
-    "merge": "^1.2.0",
+    "merge": "^1.2.1",
     "request": "^2.88.0",
     "sync-request": "^6.0.0"
   }
