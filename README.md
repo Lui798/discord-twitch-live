@@ -1,5 +1,8 @@
 # Discord Twitch Livebot
+## Disclaimer
+This bot is no longer being worked on, please use [folkbot](https://github.com/Lui798/folkbot) instead
 
+## Getting Started
 This is webhook bot for discord that posts in a chat when you go live on twitch.
 This project requires node.js: http://nodejs.org
 
